@@ -5,13 +5,16 @@ class Vertice:
         self.longitude = longitude
         self.latitude = latitude
     def get_taxi_id(self):
-        return self.taxi_id
+        return int(self.taxi_id)
 
     def get_date_time(self):
-        return self.date_time
+        return str(self.date_time)
 
     def get_longitude(self):
-        return self.longitude
+        return float(self.longitude)
 
     def get_latitude(self):
-        return self.latitude
+        return float(self.latitude)
+
+#vertice = Vertice(1,2,3,4)
+#print(type(vertice.get_latitude()))
