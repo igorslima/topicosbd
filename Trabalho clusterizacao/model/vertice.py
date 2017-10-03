@@ -15,6 +15,3 @@ class Vertice:
 
     def get_latitude(self):
         return float(self.latitude)
-
-#vertice = Vertice(1,2,3,4)
-#print(type(vertice.get_latitude()))
