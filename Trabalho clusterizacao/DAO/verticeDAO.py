@@ -19,7 +19,7 @@ class vertice_Dao:
             vertice = Vertice(linha[0], linha[1], linha[2], linha[3])
             lista.append(vertice)
         return lista
-    def join_all_files(self):
+    def join_all_files_into_a_data_set(self):
         df = pd.DataFrame()
         df['id_taxista'] = 0
         df['date_time'] = 0
@@ -35,4 +35,4 @@ class vertice_Dao:
         #return df
 dao = vertice_Dao()
 #lista_ = dao.file_to_vert_list("../1.txt")
-dao.join_all_files()
+dao.join_all_files_into_a_data_set()
