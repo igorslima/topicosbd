@@ -1,0 +1,1 @@
+﻿CREATE TABLE vertices(id_taxista integer, longitude float, latitude float, date_time varchar(50);
