@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#Base de Dados
+Trabalho clusterizacao/arquivos/
+
 # C extensions
 *.so
 
