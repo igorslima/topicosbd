@@ -16,7 +16,7 @@ class CaminhoDAO:
         pontos.close()
         cursor.close()
     def select_all(self):
-        cursor = conexao.cursor()
+        cursor = self.conexao.cursor()
         cursor.execute("SELECT * FROM caminhos;")
         resultado = cursor.fetchall()
         lista = []
@@ -28,10 +28,11 @@ class CaminhoDAO:
         return lista
 
 
-
+"""
 connectionFactory = ConnectionFactory()
 conexao = connectionFactory.getConection()
 dao = CaminhoDAO(conexao)
 dao.select_all()
 conexao.commit()
 conexao.close()
+"""
