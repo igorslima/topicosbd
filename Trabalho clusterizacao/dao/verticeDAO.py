@@ -4,7 +4,7 @@ sys.path.append("..") # "Sobe" uma pasta para que seja possível importar o mode
 #para saber o caminho do arquivo
 #import os 
 #dir_path = os.path.dirname(os.path.realpath(__file__))
-#print(dir_path)
+#print(dir_path)z
 from model.vertice import *
 import pandas as pd
 import os

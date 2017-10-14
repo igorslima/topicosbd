@@ -1,23 +1,20 @@
-from conexao import ConnectionFactory
-import sys
-sys.path.append("..")
-from model.ponto import * 
+from model.ponto import *
 class PontoDAO:
     def __init__(self, conexao):
         self.conexao = conexao
         
     def read_csv_to_db(self):
-        cursor = conexao.cursor()
+        cursor = self.conexao.cursor()
         pontos = open("../arquivos/table_vertices.csv")
         for p in pontos:
             linha = p.split(';')
-            self.cursor.execute("INSERT INTO public.pontos (id_ponto, longitude, latitude) values (%s, %s, %s)",[linha[0], linha[1], linha[2]])
+            cursor.execute("INSERT INTO public.pontos (id_ponto, longitude, latitude) values (%s, %s, %s)",[linha[0], linha[1], linha[2]])
         pontos.close()
-        conexao.commit()
+        self.conexao.commit()
         cursor.close()
 
     def select_all(self):
-        cursor = conexao.cursor()
+        cursor = self.conexao.cursor()
         cursor.execute("SELECT * FROM pontos;")
         resultado = cursor.fetchall()
         lista = []
@@ -27,13 +24,3 @@ class PontoDAO:
         print(resultado[0])
         cursor.close()
         return lista
-
-
-connectionFactory = ConnectionFactory()
-conexao = connectionFactory.getConection()
-cursor = conexao.cursor()
-dao = PontoDAO(cursor)
-dao.select_all()
-conexao.commit()
-cursor.close()
-conexao.close()

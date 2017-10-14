@@ -1,7 +1,4 @@
-from conexao import ConnectionFactory
-import sys
-sys.path.append("..")
-from model.aresta import * 
+from model.aresta import *
 class CaminhoDAO:
     def __init__(self, conexao):
         self.conexao = conexao
@@ -23,7 +20,6 @@ class CaminhoDAO:
         for r in resultado:
             aresta = Aresta(r[0], r[1], r[2], r[3])
             lista.append(aresta)
-        print(resultado[0])
         cursor.close()
         return lista
 
