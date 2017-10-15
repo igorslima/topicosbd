@@ -1,6 +1,6 @@
 import psycopg2
 from conexao import *
-class tdrivedao():
+class tdriveDAO():
     def __init__(self, conexao):
         self.conexao = conexao
     
@@ -8,8 +8,7 @@ class tdrivedao():
         cursor = self.conexao.cursor()
         cursor.execute("SELECT * FROM tdrive WHERE SUBSTRING(datetime, 12,2) = '04' OR SUBSTRING(datetime, 12,2) = '01' OR SUBSTRING(datetime, 12,2) = '23';")
         resultado = cursor.fetchall() #4567891011 12:04:55
-        for row in resultado:
-            print(row)
+        return resultado
         cursor.close()
         #print(len(resultado))
     def salvar_tdrive_no_banco(self):
@@ -24,7 +23,10 @@ class tdrivedao():
         arquivo.close()
         self.conexao.commit()
         cursor.close()
-# conexao = ConnectionFactory().getConection()
-# tdrive = tdrivedao(conexao)
-# tdrive.get_all()
-# conexao.close()
+    def update_row(self, linha, nova_posicao):
+        cursor = self.conexao.cursor()
+        cursor.execute("UPDAT")
+conexao = ConnectionFactory().getConection()
+tdrive = tdriveDAO(conexao)
+tdrive.salvar_tdrive_no_banco()
+conexao.close()
