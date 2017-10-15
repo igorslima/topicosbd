@@ -11,7 +11,6 @@ class TdriveDAO():
     def select_all(self):
         """
         Seleciona todos as colunas do banco com das horas 04, 01 e 23
-
         """
         cursor = self.conexao.cursor()
         cursor.execute("SELECT * FROM tdrive WHERE SUBSTRING(datetime, 12,2) = '04' OR SUBSTRING(datetime, 12,2) = '01' OR SUBSTRING(datetime, 12,2) = '23';")
