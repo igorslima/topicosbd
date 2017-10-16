@@ -13,7 +13,7 @@ class TdriveDAO():
         Seleciona todos as colunas do banco com das horas 04, 01 e 23
         """
         cursor = self.conexao.cursor()
-        cursor.execute("SELECT COUNT(*) FROM tdrive WHERE (SUBSTRING(datetime, 12,2) = '03' OR SUBSTRING(datetime, 12,2) = '01' OR SUBSTRING(datetime, 12,2) = '02') AND (SUBSTRING(datetime, 9,2) = '02' OR SUBSTRING(datetime, 9,2) = '03' OR SUBSTRING(datetime, 9,2) = '04');")
+        cursor.execute("SELECT * FROM tdrive WHERE (SUBSTRING(datetime, 12,2) = '04' OR SUBSTRING(datetime, 12,2) = '01' OR SUBSTRING(datetime, 12,2) = '23') AND (SUBSTRING(datetime, 9,2) = '02' OR SUBSTRING(datetime, 9,2) = '03' OR SUBSTRING(datetime, 9,2) = '04');")
         resultado = cursor.fetchall() #4567891011 12:04:55
         cursor.close()
         return resultado
