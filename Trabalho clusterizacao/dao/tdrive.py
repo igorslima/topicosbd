@@ -5,7 +5,7 @@ Modulo de Dao para o tdrive
 class TdriveDAO():
     """
     Classe de Dao para o tdrive
-    """dwww
+    """
     def __init__(self, conexao):
         self.conexao = conexao
     def select_all(self):
