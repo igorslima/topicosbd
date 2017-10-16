@@ -39,7 +39,7 @@ class MapMatching:
         print("Vou salvar todos no banco")
         cont = 0
         for item in lista:
-            self.hashMapDao.inserir_no_banco(item[0], item[1].id)
+            self.hashMapDao.inserir_no_banco(item[0], item[1])
             cont += 1
             print("Salvei {} no banco".format(cont))
         print("Salvei todos no banco")
