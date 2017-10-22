@@ -7,6 +7,10 @@ CREATE TABLE caminhos (id_caminho integer, id_source integer REFERENCES pontos(i
 -- adicionando primary key na tabela caminho, pois tinha me esquecido XD
 ALTER TABLE caminhos ADD PRIMARY KEY(id_caminho)
 
+CREATE TABLE caminhos_apos_dikstra (id_caminho integer, id_source integer REFERENCES pontos(id_ponto),  id_target integer REFERENCES pontos(id_ponto), custo float)
+
+
+
 -- criando tabela tdrive, por algum motivo o postgres não aceitava o double, por isso coloquei o precision
 CREATE TABLE tdrive (id serial primary key ,taxista_id integer, datetime character varying(19), longitude double precision, latitude double precision)
 

@@ -2,9 +2,7 @@ from model.aresta import *
 class CaminhoDAO:
     def __init__(self, conexao):
         self.conexao = conexao
-    
     def read_csv_to_db(self):
-        
         cursor = self.conexao.cursor()
         pontos = open("../arquivos/table_roads.csv")
         for p in pontos:
