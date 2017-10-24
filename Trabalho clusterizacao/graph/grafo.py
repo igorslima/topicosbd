@@ -1,9 +1,9 @@
 from collections import defaultdict
 import math
 import sys
-sys.path.append('..')
-from dao.caminhoDAO import *
-from dao.conexao import ConnectionFactory
+# sys.path.append('..')
+# from dao.caminhoDAO import *
+# from dao.conexao import ConnectionFactory
 
 class Graph:
     def __init__(self):
@@ -11,10 +11,8 @@ class Graph:
         self.arestas = defaultdict(list)
         self.pesos = {}
       
-    def add_vertice(self, value):
-        if value in self.vertices:
-            pass
-        self.vertices.add(value)
+    def add_vertice(self, vertice):
+        self.vertices.add(vertice)
 
     def add_aresta(self, do_vertice, para_vertice, custo):
         if do_vertice == para_vertice: 
