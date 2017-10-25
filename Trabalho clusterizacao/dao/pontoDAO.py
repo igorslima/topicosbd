@@ -8,18 +8,18 @@ class PontoDAO:
     """
     def __init__(self, conexao):
         self.conexao = conexao
-    def read_csv_to_db(self):
-        """
-        Metodo para colocar todos os pontos no banco
-        """
-        cursor = self.conexao.cursor()
-        pontos = open("../arquivos/table_vertices.csv")
-        for ponto in pontos:
-            linha = ponto.split(';')
-            cursor.execute("INSERT INTO public.pontos (id_ponto, longitude, latitude) values (%s, %s, %s)", [linha[0], linha[1], linha[2]])
-        pontos.close()
-        self.conexao.commit()
-        cursor.close()
+    # def read_csv_to_db(self):
+    #     """
+    #     Metodo para colocar todos os pontos no banco
+    #     """
+    #     cursor = self.conexao.cursor()
+    #     pontos = open("../arquivos/table_vertices.csv")
+    #     for ponto in pontos:
+    #         linha = ponto.split(';')
+    #         cursor.execute("INSERT INTO public.pontos (id_ponto, longitude, latitude) values (%s, %s, %s)", [linha[0], linha[1], linha[2]])
+    #     pontos.close()
+    #     self.conexao.commit()
+    #     cursor.close()
 
     def select_all(self):
         """

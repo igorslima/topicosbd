@@ -3,4 +3,6 @@ class Aresta:
         self.id = id
         self.inicio = inicio
         self.fim = fim
-        self.custo = custo # o custo será a distancia euclidiana entre o inicio e o fim?
+        self.custo = custo
+    def __str__(self):
+        return("id: {}, inicio: {}, fim: {}, custo: {}".format(self.id, self.inicio, self.fim, self.custo))

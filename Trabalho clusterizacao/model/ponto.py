@@ -3,3 +3,5 @@ class Ponto:
         self.id = id
         self.longitude = longitude
         self.latitude = latitude
+    def __str__(self):
+        return("id: {}, longitude: {}, latitude: {}".format(self.id, self.longitude, self.latitude))

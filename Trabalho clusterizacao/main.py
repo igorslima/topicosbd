@@ -1,16 +1,21 @@
 from graph.grafo import Graph
-from model import ponto, aresta, vertice
-from dao import tdrive
+from model.aresta import Aresta
+from model import ponto, vertice
+from dao.caminhoDAO import CaminhoDAO
+from dao.tdrive import TdriveDAO
+from dao.conexao import ConnectionFactory
 from math import sqrt
 
 import sys
 
+#realiza o MapMatching
 def map_matching(pontos, tdrive):
-    lista = []
+    dicionario = dict()
     for row in tdrive:
-        lista.append(find_mais_proximo(row, pontos))
-    return lista
+        dicionario[row[0]] = find_mais_proximo(row, pontos)
+    return dicionario
 
+#encontra o vertice mais próximo
 def find_mais_proximo(row, pontos):
     menor_dist = sys.maxsize
     ponto_mais_proximo = None
@@ -19,17 +24,17 @@ def find_mais_proximo(row, pontos):
         if dist < menor_dist:
             menor_dist = dist
             ponto_mais_proximo = ponto.id
-    return (row[0], ponto_mais_proximo)
+    return ponto_mais_proximo
 
+#encontra a distancia euclidiana de (x1,y2) para (y1,y2)
 def distancia_euclidiana(x1, y1, x2, y2):
     return sqrt(pow(x1-x2, 2) + pow(y1-y2,2))
 
-def base_para_grafo(tdrive_dao):
+#pega os caminhos do banco e coloca em um grafo
+def base_para_grafo(caminhos):
     grafo = Graph()
-    print(grafo)
-    for row in tdrive:
-        grafo.add_vertice(row)       
-#base_para_grafo("oi")
+    for caminho in caminhos:
+        grafo.add_vertice(caminho.id)
+        grafo.add_aresta(caminho.inicio, caminho.fim, caminho.custo)      
+    return grafo
 
-# map_matche = map_matching(pontos, tdrive)
-# 
