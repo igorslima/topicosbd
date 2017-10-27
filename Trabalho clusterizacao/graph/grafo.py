@@ -51,54 +51,27 @@ def dijkstra(graph, inicio):
     return (delta, previous)
 
 
-def dbscan(grafo, eps, min_points):
-    c = 0
-    pass
-    #c=0
-    #escolher um ponto no data set 
-    #para cada ponto não visitado no dataset:
-    #   t = pegar no mínimo min_points no data_set que estão a no máximo eps (caso eles estejam a menos que eps euclidiana) não é necessário fazer dikstra
-    #   marque todos os pontos p em t como fazendo parte do cluster c
-    #   para cada ponto em t:
-    #       expandir(t, min_points, eps, c)
-    #   c = c + 1
 
-def expandir(grafo, t, min_points, eps, c):
-    pass    
-    #t = pegar todos os pontos que estão dento de eps, caso eles tenham min_points
-    #marcar eles fazendo parto do cluster c
-    #expandir(grafo, t, min_points, eps, c)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
-
-passar os pontos do tdrive para um grafo
-depois de salvar todos os ponto 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 connectionFactory = ConnectionFactory()
 conexao = connectionFactory.getConection()
 dao = CaminhoDAO(conexao)
