@@ -39,18 +39,18 @@ def base_para_grafo(caminhos):
     return grafo
 
 
-def dijkstra(graph, inicio):
+def dijkstra(graph, source, target):
     dist = []
     for vertice in graph.vertices:
         dist.append(float('inf'))
-    dist[inicio-1] = 0
+    dist[source-1] = 0
     queue = graph.vertices
     while len(queue) > 0:
         u = min(queue)
         queue.remove(u)
-        for v in grafo.arestas[u]:
+        for v in graph.arestas[u]:
             print("u: {}".format(u))
-            alt = dist[u-1] + grafo.pesos[(u,v)]
+            alt = dist[u-1] + graph.pesos[(u,v)]
             print("v: {}".format(v))
             print("Tamanho dist: {}".format(len(dist)))
             if alt < dist[v-1]:
@@ -58,6 +58,71 @@ def dijkstra(graph, inicio):
                 dist[v-1] = alt
     return dist
         
+def DBSCAN(grafo, eps, min_points):
+    cluster_id = 0
+    for ponto in grafo.vertice:
+        if ponto.visitado == False:
+            ponto.visitado = True
+            pontos_vizinhos = regionQuery(ponto, eps)
+            if(len(pontos_vizinhos) < min_points):
+                ponto.cluster = "NOISE"
+            else:
+                cluster_id += 1
+                expand_cluster(ponto, pontos_vizinhos, cluster_id, eps, min_points)
+
+def expand_cluster(ponto, pontos_vizinhos, cluster_id, eps, min_points):
+    ponto.cluster_id = cluster_id
+    for p in pontos_vizinhos:
+        if p.visitado == False:
+            p.visitado = True
+            pontos_vizinhos_de_p = regionQuery(p, eps)
+            if len(pontos_vizinhos_de_p) >= min_points: # pode repetir vizinhos
+                for _ponto in pontos_vizinhos_de_p:
+                    pontos_vizinhos.append(_ponto)
+            if p.cluster_id == None:
+                p.cluster_id = cluster_id
+def regionQuery(ponto, tdrive, grafo, eps):
+    lista = []
+    resultado_dijkstra = dijkstra(grafo, ponto)
+    for resultado in resultado_dijkstra:
+        if resultado > eps:
+            lista.append(res)
+
+    return lista
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 grafo = Graph()
 for i in range(6):
     #print(i+1)
