@@ -49,15 +49,11 @@ def dijkstra(graph, source, target):
         u = min(queue)
         queue.remove(u)
         for v in graph.arestas[u]:
-            print("u: {}".format(u))
             alt = dist[u-1] + graph.pesos[(u,v)]
-            print("v: {}".format(v))
-            print("Tamanho dist: {}".format(len(dist)))
             if alt < dist[v-1]:
-                print("oi")
                 dist[v-1] = alt
     return dist
-        
+
 def DBSCAN(grafo, eps, min_points):
     cluster_id = 0
     for ponto in grafo.vertice:
@@ -137,5 +133,4 @@ grafo.add_aresta(4,5,1)
 grafo.add_aresta(6,4,1)
 grafo.add_aresta(6,5,1)
 
-print(grafo)
-print(dijkstra(grafo, 1))
+print(dijkstra(grafo, 1, 3))
