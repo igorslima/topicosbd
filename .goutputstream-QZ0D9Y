@@ -103,7 +103,9 @@ venv.bak/
 # mkdocs documentation
 /site
 
-
+# Input dos Dados
+/segundo_trabalho/Contexts-170503/
+/segundo_trabalho/Events-170301
 
 # mypy
 .mypy_cache/

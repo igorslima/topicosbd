@@ -4,7 +4,10 @@ class Graph:
         self.vertices = set()
         self.arestas = defaultdict(list)
         self.pesos = {}
-      
+    
+    def get_vertices(self):
+        return self.vertices
+    
     def add_vertice(self, vertice):
         self.vertices.add(vertice)
 

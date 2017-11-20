@@ -1,26 +1,13 @@
-"""
-Modulo de Dao para o tdrive
-"""
-#from conexao import *
 class TdriveDAO():
-    """
-    Classe de Dao para o tdrive
-    """
     def __init__(self, conexao):
         self.conexao = conexao
     def select_all(self):
-        """
-        Seleciona todos as colunas do banco com das horas 04, 01 e 23
-        """
         cursor = self.conexao.cursor()
         cursor.execute("SELECT * FROM tdrive WHERE SUBSTRING(datetime, 9,2) = '02' AND SUBSTRING(datetime, 12,2) = '23';")
         resultado = cursor.fetchall()
         cursor.close()
         return resultado
     def salvar_tdrive_no_banco(self):
-        """
-        Salvar os arquivos em um banco de dados
-        """
         arquivo = open('../arquivos/tdrive.csv')
         cursor = self.conexao.cursor()
         cont = 0
@@ -33,9 +20,6 @@ class TdriveDAO():
         self.conexao.commit()
         cursor.close()
     def update_row(self, linha, nova_posicao):
-        """
-        Atualizar uma linha para a nova_posicao
-        """
         linha = linha
         nova_posicao = nova_posicao
         cursor = self.conexao.cursor()
@@ -43,7 +27,3 @@ class TdriveDAO():
         cursor.commit()
         self.conexao.commit()
         cursor.close()
-# conexao = ConnectionFactory().getConection()
-# tdrive = tdriveDAO(conexao)
-# tdrive.salvar_tdrive_no_banco()
-# conexao.close()

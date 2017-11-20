@@ -10,6 +10,7 @@ class CaminhoDAO:
             cursor.execute("INSERT INTO caminhos (id_caminho, id_source, id_target, custo) values (%s, %s, %s, %s)",[linha[0], linha[1], linha[2], linha[3]])
         pontos.close()
         cursor.close()
+
     def select_all(self):
         cursor = self.conexao.cursor()
         cursor.execute("SELECT * FROM caminhos;")

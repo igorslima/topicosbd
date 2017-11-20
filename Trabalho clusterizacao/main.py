@@ -3,19 +3,28 @@ from model.aresta import Aresta
 from model import ponto, vertice
 from dao.caminhoDAO import CaminhoDAO
 from dao.tdrive import TdriveDAO
+from dao.pontoDAO import PontoDAO
 from dao.conexao import ConnectionFactory
 from math import sqrt
 import math
 import sys
+import csv
 
-#realiza o MapMatching
+"""
+realiza o MapMatching
+"""
 def map_matching(pontos, tdrive):
     dicionario = dict()
+    cont = 1
     for row in tdrive:
+        print("qtd: {}".format(cont/len(tdrive) *100))
         dicionario[row[0]] = find_mais_proximo(row, pontos)
+        cont += 1
     return dicionario
 
-#encontra o vertice mais próximo
+"""
+encontra o vertice mais próximo
+"""
 def find_mais_proximo(row, pontos):
     menor_dist = sys.maxsize
     ponto_mais_proximo = None
@@ -26,25 +35,36 @@ def find_mais_proximo(row, pontos):
             ponto_mais_proximo = ponto.id
     return ponto_mais_proximo
 
-#encontra a distancia euclidiana de (x1,y2) para (y1,y2)
+"""
+encontra a distancia euclidiana de (x1,y2) para (y1,y2)
+"""
 def distancia_euclidiana(x1, y1, x2, y2):
     return sqrt(pow(x1-x2, 2) + pow(y1-y2,2))
 
-#pega os caminhos do banco e coloca em um grafo
+"""
+passa a base para um grafo
+"""
 def base_para_grafo(caminhos):
     grafo = Graph()
-    for caminho in caminhos:
-        grafo.add_vertice(caminho.id)
-        grafo.add_aresta(caminho.inicio, caminho.fim, caminho.custo)      
+    for aresta in caminhos:
+        if(aresta.inicio not in grafo.vertices):
+            grafo.add_vertice(aresta.inicio)
+        if(aresta.fim not in grafo.vertices):
+            grafo.add_vertice(aresta.fim)
+        grafo.add_aresta(aresta.inicio, aresta.fim, aresta.custo)      
     return grafo
 
-
-def dijkstra(graph, source, target):
+'''
+Retorna um dicionário com a menor distância do source para todos os demais vertices do grafo 
+'''
+def dijkstra(graph, source):
     dist = []
+    print(graph)
     for vertice in graph.vertices:
         dist.append(float('inf'))
     dist[source-1] = 0
-    queue = graph.vertices
+    queue = graph.vertices.copy()
+    lista = list(queue)
     while len(queue) > 0:
         u = min(queue)
         queue.remove(u)
@@ -52,85 +72,58 @@ def dijkstra(graph, source, target):
             alt = dist[u-1] + graph.pesos[(u,v)]
             if alt < dist[v-1]:
                 dist[v-1] = alt
-    return dist
+    dicionario = dict()
+    for x in range(len(lista)):
+        dicionario[lista[x]] = dist[x]
+    return dicionario
 
-def DBSCAN(grafo, eps, min_points):
+def DBSCAN(grafo, eps, min_points, pontos):
     cluster_id = 0
-    for ponto in grafo.vertice:
-        if ponto.visitado == False:
-            ponto.visitado = True
-            pontos_vizinhos = regionQuery(ponto, eps)
+    for vertice in grafo.vertices:
+        if pontos[vertice].visitado == False:
+            pontos[vertice].visitado = True
+            pontos[vertice].iscore = False
+            pontos_vizinhos = regionQuery(vertice, grafo, eps)
             if(len(pontos_vizinhos) < min_points):
-                ponto.cluster = "NOISE"
+                pontos[vertice].cluster = "NOISE"
             else:
+                pontos[vertice].iscore = True
                 cluster_id += 1
-                expand_cluster(ponto, pontos_vizinhos, cluster_id, eps, min_points)
+                expand_cluster(vertice, pontos_vizinhos, cluster_id, eps, min_points)
 
 def expand_cluster(ponto, pontos_vizinhos, cluster_id, eps, min_points):
     ponto.cluster_id = cluster_id
     for p in pontos_vizinhos:
         if p.visitado == False:
             p.visitado = True
-            pontos_vizinhos_de_p = regionQuery(p, eps)
-            if len(pontos_vizinhos_de_p) >= min_points: # pode repetir vizinhos
+            pontos_vizinhos_de_p = regionQuery(p, grafo, eps)
+            if len(pontos_vizinhos_de_p) >= min_points:
                 for _ponto in pontos_vizinhos_de_p:
-                    pontos_vizinhos.append(_ponto)
+                    if _ponto not in pontos_vizinhos:
+                        pontos_vizinhos.append(_ponto)
             if p.cluster_id == None:
                 p.cluster_id = cluster_id
-def regionQuery(ponto, tdrive, grafo, eps):
+
+def regionQuery(ponto, grafo, eps):
     lista = []
     resultado_dijkstra = dijkstra(grafo, ponto)
     for resultado in resultado_dijkstra:
         if resultado > eps:
-            lista.append(res)
-
+            lista.append(resultado)
     return lista
 
+def exportar_csv(grafo):
+    arquivo = open("output.csv", 'w', newline='')
+    campos = ['student_id', 'weekday', 'hour', 'latitude', 'longitude', 'cluster', 'iscore']
+    writer = csv.DictWriter(arquivo, fieldnames=campos)
+    writer.writeheader() # escrevendo cabeçalho
+    for ponto in grafo.vertices:
+        writer.writerow({'student_id' : '375082', 'weekday' : '02', 'hour' : '23', 'latitude' : ponto.latitude, 'longitude' : ponto.longitude, 'cluster' : ponto.cluster, 'iscore' : ponto.iscore})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-grafo = Graph()
-for i in range(6):
-    #print(i+1)
-    grafo.add_vertice(i+1)
-grafo.add_vertice(7)
-grafo.add_aresta(1,2,1)
-grafo.add_aresta(1,6,2)
-grafo.add_aresta(2,3,2)
-grafo.add_aresta(2,4,1)
-grafo.add_aresta(3,5,2)
-grafo.add_aresta(4,5,1)
-grafo.add_aresta(6,4,1)
-grafo.add_aresta(6,5,1)
-
-print(dijkstra(grafo, 1, 3))
+conexao = ConnectionFactory().getConection()
+caminhos = CaminhoDAO(conexao).select_all()
+pontos = PontoDAO(conexao).select_all()
+tdrive = TdriveDAO(conexao).select_all()
+dicionario_map_matching = map_matching(pontos, tdrive)
+grafo = base_para_grafo(caminhos)
+DBSCAN(grafo, 0.004, 10, "dicionario_map_matching")
