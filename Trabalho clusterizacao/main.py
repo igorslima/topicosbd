@@ -77,17 +77,17 @@ def dijkstra(graph, source):
         dicionario[lista[x]] = dist[x]
     return dicionario
 
-def DBSCAN(grafo, eps, min_points, pontos):
+def DBSCAN(grafo, eps, min_points, dicionario):
     cluster_id = 0
     for vertice in grafo.vertices:
-        if pontos[vertice].visitado == False:
-            pontos[vertice].visitado = True
-            pontos[vertice].iscore = False
+        if dicionario[vertice].visitado == False:
+            dicionario[vertice].visitado = True
+            dicionario[vertice].iscore = False
             pontos_vizinhos = regionQuery(vertice, grafo, eps)
             if(len(pontos_vizinhos) < min_points):
-                pontos[vertice].cluster = "NOISE"
+                dicionario[vertice].cluster = "NOISE"
             else:
-                pontos[vertice].iscore = True
+                dicionario[vertice].iscore = True
                 cluster_id += 1
                 expand_cluster(vertice, pontos_vizinhos, cluster_id, eps, min_points)
 
@@ -120,10 +120,13 @@ def exportar_csv(grafo):
     for ponto in grafo.vertices:
         writer.writerow({'student_id' : '375082', 'weekday' : '02', 'hour' : '23', 'latitude' : ponto.latitude, 'longitude' : ponto.longitude, 'cluster' : ponto.cluster, 'iscore' : ponto.iscore})
 
-conexao = ConnectionFactory().getConection()
-caminhos = CaminhoDAO(conexao).select_all()
-pontos = PontoDAO(conexao).select_all()
-tdrive = TdriveDAO(conexao).select_all()
-dicionario_map_matching = map_matching(pontos, tdrive)
-grafo = base_para_grafo(caminhos)
-DBSCAN(grafo, 0.004, 10, "dicionario_map_matching")
+
+grafo = Graph()
+for x in range(7):
+    grafo.add_vertice(x+1)
+grafo.add_aresta(1,2,2)
+grafo.add_aresta(2,4,3)
+grafo.add_aresta(2,5,1)
+#grafo.add_aresta()
+print(grafo)
+# grafo = base_para_grafo(caminhos)

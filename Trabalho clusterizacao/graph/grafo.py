@@ -1,7 +1,7 @@
 from collections import defaultdict
 class Graph:
     def __init__(self):
-        self.vertices = set()
+        self.vertices = list()
         self.arestas = defaultdict(list)
         self.pesos = {}
     
@@ -9,7 +9,7 @@ class Graph:
         return self.vertices
     
     def add_vertice(self, vertice):
-        self.vertices.add(vertice)
+        self.vertices.append(vertice)
 
     def add_aresta(self, do_vertice, para_vertice, custo):
         if do_vertice == para_vertice: 
