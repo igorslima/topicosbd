@@ -1,5 +1,6 @@
 from graph.grafo import Graph
 from model.aresta import Aresta
+from model.vertice import Vertice
 from model import ponto, vertice
 from dao.caminhoDAO import CaminhoDAO
 from dao.tdrive import TdriveDAO
@@ -22,9 +23,6 @@ def map_matching(pontos, tdrive):
         cont += 1
     return dicionario
 
-"""
-encontra o vertice mais próximo
-"""
 def find_mais_proximo(row, pontos):
     menor_dist = sys.maxsize
     ponto_mais_proximo = None
@@ -35,41 +33,35 @@ def find_mais_proximo(row, pontos):
             ponto_mais_proximo = ponto.id
     return ponto_mais_proximo
 
-"""
-encontra a distancia euclidiana de (x1,y2) para (y1,y2)
-"""
 def distancia_euclidiana(x1, y1, x2, y2):
     return sqrt(pow(x1-x2, 2) + pow(y1-y2,2))
 
-"""
-passa a base para um grafo
-"""
-def base_para_grafo(caminhos):
+def base_para_grafo(topologia, pontos):
     grafo = Graph()
-    for aresta in caminhos:
-        if(aresta.inicio not in grafo.vertices):
+    cont = 0
+    for aresta in topologia:
+        print(cont/len(topologia))
+        cont += 1
+        if aresta.inicio not in grafo.vertices:
+#            inicio = Vertice(aresta.inicio, pontos[i][0], pontos[i][1])
             grafo.add_vertice(aresta.inicio)
-        if(aresta.fim not in grafo.vertices):
+        if aresta.fim not in grafo.vertices:
             grafo.add_vertice(aresta.fim)
-        grafo.add_aresta(aresta.inicio, aresta.fim, aresta.custo)      
+        grafo.add_aresta(aresta.inicio, aresta.fim, aresta.custo)
     return grafo
 
-'''
-Retorna um dicionário com a menor distância do source para todos os demais vertices do grafo 
-'''
-def dijkstra(graph, source):
+def dijkstra(grafo, source):
     dist = []
-    print(graph)
-    for vertice in graph.vertices:
+    for vertice in grafo.vertices:
         dist.append(float('inf'))
     dist[source-1] = 0
-    queue = graph.vertices.copy()
+    queue = grafo.vertices.copy()
     lista = list(queue)
     while len(queue) > 0:
         u = min(queue)
         queue.remove(u)
-        for v in graph.arestas[u]:
-            alt = dist[u-1] + graph.pesos[(u,v)]
+        for v in grafo.arestas[u]:
+            alt = dist[u-1] + grafo.pesos[(u,v)]
             if alt < dist[v-1]:
                 dist[v-1] = alt
     dicionario = dict()
@@ -77,17 +69,17 @@ def dijkstra(graph, source):
         dicionario[lista[x]] = dist[x]
     return dicionario
 
-def DBSCAN(grafo, eps, min_points, dicionario):
+def DBSCAN(grafo, eps, min_points):
     cluster_id = 0
     for vertice in grafo.vertices:
-        if dicionario[vertice].visitado == False:
-            dicionario[vertice].visitado = True
-            dicionario[vertice].iscore = False
+        if vertice.visitado == False:
+            vertice.visitado = True
+            vertice.iscore = False
             pontos_vizinhos = regionQuery(vertice, grafo, eps)
             if(len(pontos_vizinhos) < min_points):
-                dicionario[vertice].cluster = "NOISE"
+                vertice.cluster = "NOISE"
             else:
-                dicionario[vertice].iscore = True
+                vertice.iscore = True
                 cluster_id += 1
                 expand_cluster(vertice, pontos_vizinhos, cluster_id, eps, min_points)
 
@@ -116,7 +108,7 @@ def exportar_csv(grafo):
     arquivo = open("output.csv", 'w', newline='')
     campos = ['student_id', 'weekday', 'hour', 'latitude', 'longitude', 'cluster', 'iscore']
     writer = csv.DictWriter(arquivo, fieldnames=campos)
-    writer.writeheader() # escrevendo cabeçalho
+    writer.writeheader()
     for ponto in grafo.vertices:
         writer.writerow({'student_id' : '375082', 'weekday' : '02', 'hour' : '23', 'latitude' : ponto.latitude, 'longitude' : ponto.longitude, 'cluster' : ponto.cluster, 'iscore' : ponto.iscore})
 
@@ -127,6 +119,11 @@ for x in range(7):
 grafo.add_aresta(1,2,2)
 grafo.add_aresta(2,4,3)
 grafo.add_aresta(2,5,1)
-#grafo.add_aresta()
+grafo.add_aresta(1,3,4)
+grafo.add_aresta(3,7,2)
+# grafo.add_aresta(5,4,1)
+# print(dijkstra(grafo, 1))
+conexao = ConnectionFactory().getConection()
+caminhosDao = CaminhoDAO(conexao)
+grafo = base_para_grafo(caminhosDao.select_all(), "postos")
 print(grafo)
-# grafo = base_para_grafo(caminhos)

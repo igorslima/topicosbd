@@ -1,11 +1,6 @@
-"""
-Modulo para fazer o dao do ponto com o banco de dados
-"""
 from model.ponto import *
 class PontoDAO:
-    """
-    Classe para fazer o dao do ponto com o banco
-    """
+
     def __init__(self, conexao):
         self.conexao = conexao
     # def read_csv_to_db(self):
@@ -20,7 +15,6 @@ class PontoDAO:
     #     pontos.close()
     #     self.conexao.commit()
     #     cursor.close()
-
     def select_all(self):
         """
         Metodo para selecionar todos os pontos
@@ -28,9 +22,8 @@ class PontoDAO:
         cursor = self.conexao.cursor()
         cursor.execute("SELECT * FROM pontos;")
         resultado = cursor.fetchall()
-        lista = []
+        dicionario = dict()
         for result in resultado:
-            ponto = Ponto(result[0], result[1], result[2])
-            lista.append(ponto)
+            dicionario[resultado[0]] = (resultado[1], resultado[2])
         cursor.close()
-        return lista
+        return dicionario

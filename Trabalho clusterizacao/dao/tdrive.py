@@ -3,7 +3,7 @@ class TdriveDAO():
         self.conexao = conexao
     def select_all(self):
         cursor = self.conexao.cursor()
-        cursor.execute("SELECT * FROM tdrive WHERE SUBSTRING(datetime, 9,2) = '02' AND SUBSTRING(datetime, 12,2) = '23';")
+        cursor.execute("SELECT * FROM tdrive WHERE SUBSTRING(datetime, 9,2) = '02' AND SUBSTRING(datetime, 12,2) = '23' AND SUBSTRING(datetime, 15,2) > '55'") # 8752 resultados 
         resultado = cursor.fetchall()
         cursor.close()
         return resultado
