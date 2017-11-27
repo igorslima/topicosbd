@@ -3,6 +3,18 @@ class PontoDAO:
 
     def __init__(self, conexao):
         self.conexao = conexao
+    def select_all(self):
+        """
+        Metodo para selecionar todos os pontos
+        """
+        cursor = self.conexao.cursor()
+        cursor.execute("SELECT * FROM pontos;")
+        resultado = cursor.fetchall()
+        dicionario = dict()
+        for result in resultado:
+            dicionario[result[0]] = (result[1], result[2])
+        cursor.close()
+        return dicionario
     # def read_csv_to_db(self):
     #     """
     #     Metodo para colocar todos os pontos no banco
@@ -15,15 +27,3 @@ class PontoDAO:
     #     pontos.close()
     #     self.conexao.commit()
     #     cursor.close()
-    def select_all(self):
-        """
-        Metodo para selecionar todos os pontos
-        """
-        cursor = self.conexao.cursor()
-        cursor.execute("SELECT * FROM pontos;")
-        resultado = cursor.fetchall()
-        dicionario = dict()
-        for result in resultado:
-            dicionario[resultado[0]] = (resultado[1], resultado[2])
-        cursor.close()
-        return dicionario

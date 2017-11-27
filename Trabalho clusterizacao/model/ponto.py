@@ -7,4 +7,4 @@ class Ponto:
         self.cluster = None
         self.iscore = False
     def __str__(self):
-        return("id: {}, longitude: {}, latitude: {}, visitado: {}, cluster: {}".format(self.id, self.longitude, self.latitude, self.visitado, self.cluster))
+        return("id: {}, longitude: {}, latitude: {}, visitado: {}, cluster: {}, iscore".format(self.id, self.longitude, self.latitude, self.visitado, self.cluster, self.iscore))

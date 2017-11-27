@@ -1,7 +1,8 @@
+from model.ponto import Ponto
 from graph.grafo import Graph
 from model.aresta import Aresta
 from model.vertice import Vertice
-from model import ponto, vertice
+from model.vertice import Vertice
 from dao.caminhoDAO import CaminhoDAO
 from dao.tdrive import TdriveDAO
 from dao.pontoDAO import PontoDAO
@@ -40,16 +41,14 @@ def base_para_grafo(topologia, pontos):
     grafo = Graph()
     cont = 0
     for aresta in topologia:
-        print(cont/len(topologia))
+        inicio = Ponto(aresta.inicio, pontos[aresta.inicio][0],pontos[aresta.inicio][1])
+        fim = Ponto(aresta.fim, pontos[aresta.fim][0], pontos[aresta.fim][1])
+        grafo.add_vertice(inicio)
+        grafo.add_vertice(fim)
+        grafo.add_aresta(inicio, fim, aresta.custo)
+        print("quantidade: {}".format(cont/len(topologia) * 100))
         cont += 1
-        if aresta.inicio not in grafo.vertices:
-#            inicio = Vertice(aresta.inicio, pontos[i][0], pontos[i][1])
-            grafo.add_vertice(aresta.inicio)
-        if aresta.fim not in grafo.vertices:
-            grafo.add_vertice(aresta.fim)
-        grafo.add_aresta(aresta.inicio, aresta.fim, aresta.custo)
     return grafo
-
 def dijkstra(grafo, source):
     dist = []
     for vertice in grafo.vertices:
@@ -125,5 +124,7 @@ grafo.add_aresta(3,7,2)
 # print(dijkstra(grafo, 1))
 conexao = ConnectionFactory().getConection()
 caminhosDao = CaminhoDAO(conexao)
-grafo = base_para_grafo(caminhosDao.select_all(), "postos")
-print(grafo)
+pontosDao = PontoDAO(conexao)
+print("inserindo no grafo")
+grafo = base_para_grafo(caminhosDao.select_all(), pontosDao.select_all())
+#print(grafo)

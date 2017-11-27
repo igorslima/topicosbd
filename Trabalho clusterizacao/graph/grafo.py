@@ -11,11 +11,9 @@ class Graph:
     def add_vertice(self, vertice):
         self.vertices.append(vertice)
 
-    def add_aresta(self, do_vertice, para_vertice, custo):
-        if do_vertice == para_vertice: 
-            pass
-        self.arestas[do_vertice].append(para_vertice)
-        self.pesos[(do_vertice, para_vertice)] = custo
+    def add_aresta(self, from_vertice, to_vertice, custo):
+        self.arestas[from_vertice].append(to_vertice)
+        self.pesos[(from_vertice, to_vertice)] = custo
 
     def __str__(self):
         string = "Vertices: " + str(self.vertices) + "\n"
